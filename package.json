@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-demo",
+  "version": "1.0.0",
+  "description": "nodejs demo project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mieli-digital/nodejs-demo.git"
+  },
+  "author": "Vuong Ngo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mieli-digital/nodejs-demo/issues"
+  },
+  "homepage": "https://github.com/Mieli-digital/nodejs-demo#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
