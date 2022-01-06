@@ -1,13 +1,18 @@
 const express = require('express');
 const logger = require('morgan');
-const bodyParser = require('body-parser');
 
-const ordersController = require('./controller/ordersController');
+const ordersController = require('./controller/orders.controller');
+const initIndexRoutes = require('./routes/index.routes');
+
+//set path
+global.__basedir = __dirname;
 
 const app = express();
 
 app.use(logger('dev'));
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+
 
 // GET method route
 app.get('/', function (req, res) {
@@ -34,6 +39,8 @@ app.all('/', function(req, res){
 });
 
 app.use('/orders', ordersController);
+
+initIndexRoutes(app);
 
 app.listen(3000, () => {
   console.log("Running on Port 3000")
