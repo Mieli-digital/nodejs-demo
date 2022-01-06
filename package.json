@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-demo",
+  "version": "1.0.0",
+  "description": "nodejs project for demo purposes",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "debug": "^4.3.3",
+    "express": "^4.17.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mieli-digital/nodejs-demo.git"
+  },
+  "author": "Vuong Ngo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mieli-digital/nodejs-demo/issues"
+  },
+  "homepage": "https://github.com/Mieli-digital/nodejs-demo#readme"
+}
