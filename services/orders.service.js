@@ -41,9 +41,6 @@ class OrderService {
       throw new Error("id is invalid or wrong format");
     
     let salesOrderIndex = this.salesOrders.findIndex(x => x.id === id);
-    console.log(this.salesOrders);
-    console.log(salesOrderIndex);
-    console.log(id);
     if(salesOrderIndex < 0)
       throw new Error(`order by id {id} not found`);
     
