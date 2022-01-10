@@ -2,9 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const fs = require('fs');
 const path = require('path');
-
-const ordersController = require('./controller/orders.controller');
-const initIndexRoutes = require('./routes/index.routes');
+require('dotenv').config()
 
 //set path
 global.__basedir = __dirname;
@@ -21,6 +19,12 @@ app.use(logger('combined', {stream: accessLogStream}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
+const sequelizeDb = require('./models/index');
+sequelizeDb.sequelize.sync({ alter:true });
+
+const ordersController = require('./controller/orders.controller');
+const initIndexRoutes = require('./routes/index.routes');
+const initArticleRoutes = require('./routes/article.routes');
 
 // GET method route
 app.get('/', function (req, res) {
@@ -49,6 +53,7 @@ app.all('/', function(req, res){
 app.use('/orders', ordersController);
 
 initIndexRoutes(app);
+initArticleRoutes(app, sequelizeDb);
 
 app.listen(3000, () => {
   console.log("Running on Port 3000")
