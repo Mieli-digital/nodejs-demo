@@ -38,35 +38,8 @@ const s3Context = new S3ContextFactory({
   host: "localhost",
 });
 
-const ordersController = require('./controller/orders.controller');
 const initIndexRoutes = require('./routes/index.routes');
 const initArticleRoutes = require('./routes/article.routes');
-
-// GET method route
-app.get('/', function (req, res) {
-  res.send('GET request to the homepage');
-});
-
-// POST method route
-app.post('/', function (req, res) {
-  res.send('POST request to the homepage');
-});
-
-// PUT method route
-app.put('/', function (req, res) {
-  res.send('PUT request to the homepage');
-});
-
-// DELETE method route
-app.delete('/', function (req, res) {
-  res.send('DELETE request to the homepage');
-});
-
-app.all('/', function(req, res){
-  res.send("Another request to the homepage");
-});
-
-app.use('/orders', ordersController);
 
 initIndexRoutes(app, s3Context);
 initArticleRoutes(app, sequelizeDb, mongoDbContext);
