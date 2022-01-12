@@ -94,12 +94,12 @@ class ArticleController {
     }
 
     try {
-      let updateArticleResponds = await this.articleService.update(req.query.id, {
+      let updateArticleResponse = await this.articleService.update(req.query.id, {
         name: req.body.name,
         cost: req.body.cost,
         type: req.body.type
       });
-      res.send(updateArticleResponds);
+      res.send(updateArticleResponse);
     } catch (err) {
       res.status(500).send({
         message:
@@ -118,8 +118,8 @@ class ArticleController {
     }
 
     try {
-      let deleteArticleResponds = await this.articleService.delete(req.query.id);
-      res.send(deleteArticleResponds);
+      let deleteArticleResponse = await this.articleService.delete(req.query.id);
+      res.send(deleteArticleResponse);
     } catch(err) {
       res.status(500).send({
         message:
@@ -198,12 +198,12 @@ class ArticleController {
     }
 
     try {
-      let updateArticleResponds = await this.articleService.updateFromMongoDb(req.query.id, {
+      let updateArticleResponse = await this.articleService.updateFromMongoDb(req.query.id, {
         name: req.body.name,
         cost: req.body.cost,
         type: req.body.type
       });
-      res.send(updateArticleResponds);
+      res.send(updateArticleResponse);
     } catch (err) {
       res.status(500).send({
         message:
@@ -221,8 +221,8 @@ class ArticleController {
     }
 
     try {
-      let deleteArticleResponds = await this.articleService.deleteFromMongoDb(req.query.id);
-      res.send(deleteArticleResponds);
+      let deleteArticleResponse = await this.articleService.deleteFromMongoDb(req.query.id);
+      res.send(deleteArticleResponse);
     } catch (err) {
       res.status(500).send({
         message:

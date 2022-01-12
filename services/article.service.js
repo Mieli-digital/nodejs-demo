@@ -141,12 +141,9 @@ class ArticleService{
     }
       
     else {
-      let articleDeleteResponds = await this.mongoDbContext.article.deleteOne({ _id: articleId }).exec();
-      return articleDeleteResponds;
+      let articleDeleteResponse = await this.mongoDbContext.article.deleteOne({ _id: articleId }).exec();
+      return articleDeleteResponse;
     }
-        
-    
-
   }
 }
 
