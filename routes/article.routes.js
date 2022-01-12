@@ -7,6 +7,8 @@ let routes = (app, db) => {
   router.get("/", articleController.getAll);
   router.get("/:id", articleController.getById);
   router.post("/", articleController.create);
+  router.put("/", articleController.update);
+  router.delete("/", articleController.delete);
 
   app.use('/article', router);
 };

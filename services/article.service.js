@@ -31,13 +31,13 @@ class ArticleService{
     return articleRequest;
   }
 
-  async getById(id){
-    if(!id)
+  async getById(articleId){
+    if(!articleId)
       throw new Error("id invalid");
     
     const articleRequest = await this.sequelizeArticleWrapper.findAll({
       where: {
-        id: id
+        id: articleId
       }
     });
     return articleRequest;
@@ -50,6 +50,34 @@ class ArticleService{
     const article = await this.sequelizeArticleWrapper.create(articleDto);
 
     return article;
+  }
+
+  async update(articleId, articleDto){
+    if(!articleId)
+      throw new Error("id invalid");
+    if(!articleDto)
+      throw new Error("articleDto is empty");
+
+    const articleRequest = await this.sequelizeArticleWrapper.update(articleDto, { where: {id: articleId}});
+    if(articleRequest){
+      console.log(articleRequest);
+      return "done";
+    }
+
+    throw new Error("Something went wrong on delete");
+  }
+
+  async delete(articleId){
+    if(!articleId)
+      throw new Error("id invalid");
+
+    const articleRequest = await this.sequelizeArticleWrapper.destroy({ where: { id: articleId}});
+    if(articleRequest){
+      console.log(articleRequest);
+      return "done";
+    }
+
+    throw new Error("Something went wrong on delete");
   }
 }
 
