@@ -22,6 +22,15 @@ app.use(express.json())
 const sequelizeDb = require('./models/index');
 sequelizeDb.sequelize.sync({ alter:true });
 
+const MongoDbContextFactory = require('./connections/mongodb.context');
+const mongoDbContext = new MongoDbContextFactory({
+  username: "root",
+  password: process.env.MONGO_INITDB_ROOT_PASSWORD,
+  host: "localhost",
+  port: 27017,
+  database: process.env.MONGO_INITDB_DATABASE
+});
+
 const ordersController = require('./controller/orders.controller');
 const initIndexRoutes = require('./routes/index.routes');
 const initArticleRoutes = require('./routes/article.routes');
@@ -53,7 +62,7 @@ app.all('/', function(req, res){
 app.use('/orders', ordersController);
 
 initIndexRoutes(app);
-initArticleRoutes(app, sequelizeDb);
+initArticleRoutes(app, sequelizeDb, mongoDbContext);
 
 app.listen(3000, () => {
   console.log("Running on Port 3000")

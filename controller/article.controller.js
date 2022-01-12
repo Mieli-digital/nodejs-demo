@@ -1,11 +1,13 @@
 const ArticleService = require('../services/article.service')
 
 class ArticleController {
-  constructor(dbContext){
-    if(!dbContext)
-      throw new Error("invalid dbContext");
+  constructor(sequelizeDbContext, mongoDbContext){
+    if(!sequelizeDbContext)
+      throw new Error("invalid sequelizeDbContext");
+    if(!mongoDbContext)
+      throw new Error("invalid mongoDbContext");
     
-    this.articleService = new ArticleService(dbContext);
+    this.articleService = new ArticleService(sequelizeDbContext, mongoDbContext);
   }
   // GET /?name={string}
   getAll = async (req, res) => {
@@ -28,10 +30,9 @@ class ArticleController {
         message:
           err.message || "Some error occurred while getting Articles."
       });
-    }
-
-    
+    }    
   }
+
   // GET /:id
   getById = async (req, res) => {
     // Validate request
@@ -51,6 +52,7 @@ class ArticleController {
       });
     }
   }
+
   // POST /
   create = async (req, res) => {
     // Validate request
@@ -124,6 +126,109 @@ class ArticleController {
           err.message || "Some error occurred while deleting the Article."
       });
     }
+  }
+
+  //// mongodb controller
+
+  getAllFromMongoDb = async (req, res) => {
+    try {
+      res.send(await this.articleService.getAllFromMongoDb());
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while getting Articles."
+      });
+    }  
+  }
+
+  getByIdFromMongoDb = async (req, res) => {
+    // Validate request
+    if (!req.param.id) {
+      res.status(400).send({
+        message: "Id missing!"
+      });
+      return;
+    }
+    try {
+      res.send(await this.articleService.getByIdFromMongoDb(req.param.id));
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while getting Articles."
+      });
+    }  
+  }
+
+  createFromMongoDb = async (req, res) => {
+    // Validate request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+  
+    try {
+      let article = await this.articleService.createFromMongoDb({
+        name: req.body.name,
+        cost: req.body.cost,
+        type: req.body.type
+      });
+      res.send(article);
+    } catch(err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Article."
+      });
+    }
+  }
+
+  updateFromMongoDb = async (req, res) => {    
+    if(!req.query.id) {
+      res.status(400).send({
+        message: "Id can not be empty!"
+      });
+      return;
+    }
+    if(!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+
+    try {
+      let updateArticleResponds = await this.articleService.updateFromMongoDb(req.query.id, {
+        name: req.body.name,
+        cost: req.body.cost,
+        type: req.body.type
+      });
+      res.send(updateArticleResponds);
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while updating the Article."
+      });
+    }
+  }
+
+  deleteFromMongoDb = async (req, res) => {
+    if(!req.query.id) {
+      res.status(400).send({
+        message: "Id can not be empty!"
+      });
+      return;
+    }
+
+    try {
+      let deleteArticleResponds = await this.articleService.deleteFromMongoDb(req.query.id);
+      res.send(deleteArticleResponds);
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while getting Articles."
+      });
+    }  
   }
 }
 
