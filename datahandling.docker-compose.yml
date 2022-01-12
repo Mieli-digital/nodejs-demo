@@ -74,21 +74,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     networks:
       - web
       - internal
+    ports:
+      - 27017:27017
     # configure to host  
     labels:
       - traefik.http.routers.mongodb.rule=Host(`${MONGODB_HOST}`)
-      - traefik.port=27017    
-  ## NoSQL DB
-  mongo-gui:
-    image: samueltallet/mongodb-php-gui
-    restart: always
-    networks:
-      - web
-      - internal
-    # configure to host  
-    labels:
-      - traefik.http.routers.mongodb-ui.rule=Host(`${MONGODB_UI_HOST}`)
-      - traefik.port=5000    
+      - traefik.port=27017       
