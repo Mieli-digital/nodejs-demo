@@ -31,6 +31,13 @@ const mongoDbContext = new MongoDbContextFactory({
   database: process.env.MONGO_INITDB_DATABASE
 });
 
+const S3ContextFactory = require('./connections/s3.context');
+const s3Context = new S3ContextFactory({
+  accessKey: process.env.MINIO_ACCESS_KEY,
+  secretKey: process.env.MINIO_SECRET_KEY,
+  host: "localhost",
+});
+
 const ordersController = require('./controller/orders.controller');
 const initIndexRoutes = require('./routes/index.routes');
 const initArticleRoutes = require('./routes/article.routes');
@@ -61,7 +68,7 @@ app.all('/', function(req, res){
 
 app.use('/orders', ordersController);
 
-initIndexRoutes(app);
+initIndexRoutes(app, s3Context);
 initArticleRoutes(app, sequelizeDb, mongoDbContext);
 
 app.listen(3000, () => {
