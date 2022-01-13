@@ -12,7 +12,6 @@ class MongoDbContext{
     mongoose.connect(url, 
     {
       authSource: 'admin',
-      dbName: mongodbConnectionConfig.database,
       useUnifiedTopology: true,
       useNewUrlParser: true
     });
