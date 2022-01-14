@@ -1,4 +1,4 @@
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 class S3Context{
   constructor(s3Config){
     if(!s3Config)
