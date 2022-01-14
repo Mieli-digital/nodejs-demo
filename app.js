@@ -10,7 +10,7 @@ global.__basedir = __dirname;
 const app = express();
 
 app.use(logger('dev'));
-var accessLogStream = fs.createWriteStream(
+const accessLogStream = fs.createWriteStream(
   path.join(__dirname, 'access.log'), {flags: 'a'}
 );
 // setup the logger 
