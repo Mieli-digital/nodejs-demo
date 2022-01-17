@@ -37,6 +37,8 @@ services:
     labels:
       - traefik.http.routers.adminer.rule=Host(`${ADMINER_HOST}`)
       - traefik.port=8080
+    ports:
+      - 8080:8080
     networks:
       - internal
       - web
