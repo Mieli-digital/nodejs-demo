@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "serviceuser",
+    "password": "23d5336cec2c7ad0e601e16aa06af233",
+    "database": "nodejs-demo",
+    "host": "127.0.0.1",
+    "dialect": "mariadb"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
