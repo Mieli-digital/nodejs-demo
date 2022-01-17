@@ -37,6 +37,8 @@ services:
     labels:
       - traefik.http.routers.adminer.rule=Host(`${ADMINER_HOST}`)
       - traefik.port=8080
+    ports:
+      - 8080:8080
     networks:
       - internal
       - web
@@ -81,14 +83,3 @@ services:
     labels:
       - traefik.http.routers.mongodb.rule=Host(`${MONGODB_HOST}`)
       - traefik.port=27017    
-  ## NoSQL DB
-  mongo-gui:
-    image: samueltallet/mongodb-php-gui
-    restart: always
-    networks:
-      - web
-      - internal
-    # configure to host  
-    labels:
-      - traefik.http.routers.mongodb-ui.rule=Host(`${MONGODB_UI_HOST}`)
-      - traefik.port=5000    
