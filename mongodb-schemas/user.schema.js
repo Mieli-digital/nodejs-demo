@@ -4,5 +4,6 @@ module.exports = {
   createdAt: Date,
   firstName: String,
   lastName: String,
-  role: String
+  role: String,
+  provider: String,
 }
