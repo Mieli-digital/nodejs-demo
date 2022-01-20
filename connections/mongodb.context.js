@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const articleSchema = require('../mongodb-schemas/article.schema')
+const articleSchema = require('../mongodb-schemas/article.schema');
+const userSchema = require('../mongodb-schemas/user.schema');
 
 class MongoDbContext{
   constructor(mongodbConnectionConfig){
@@ -29,6 +30,7 @@ class MongoDbContext{
 
     //init Models
     this.article = mongoose.model('Article', mongoose.Schema(articleSchema));
+    this.user = mongoose.model('User', mongoose.Schema(userSchema))
   }
 }
 

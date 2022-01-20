@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const initPassportJWT = require('./auth/passport.config');
 require('dotenv').config()
 
 //set path
@@ -38,11 +39,15 @@ const s3Context = new S3ContextFactory({
   host: "localhost",
 });
 
+initPassportJWT(mongoDbContext);
 const initIndexRoutes = require('./routes/index.routes');
 const initArticleRoutes = require('./routes/article.routes');
+const initAuthRoutes = require('./routes/auth.router');
+const passport = require('passport');
 
 initIndexRoutes(app, s3Context);
-initArticleRoutes(app, sequelizeDb, mongoDbContext);
+initArticleRoutes(app, sequelizeDb, mongoDbContext, passport);
+initAuthRoutes(app, mongoDbContext);
 
 app.listen(3000, () => {
   console.log("Running on Port 3000")
