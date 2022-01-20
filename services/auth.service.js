@@ -22,7 +22,6 @@ class AuthService{
       throw new Error("User not found!");
 
     let compare = await bcrypt.compare(loginData.password, user.password);
-    console.log(compare);
     if(compare){
       let token = jwt.sign({
         iss: 'nodejs-demo',
