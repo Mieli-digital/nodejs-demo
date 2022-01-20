@@ -23,15 +23,14 @@ class AuthService{
 
     let compare = await bcrypt.compare(loginData.password, user.password);
     if(compare){
-      let token = jwt.sign({
+      let token = jwt.sign({data: {
         iss: 'nodejs-demo',
         sub: user.id,
         iat: new Date().getTime(),
         exp: new Date().setDate(new Date().getDate() + 1),
         userName: user.userName,
-        id: user.id,
         role: user.role
-      }, 'supersecretpass123')
+      }}, 'supersecretpass123')
       return token;
     }
     throw new Error("something went wrong");

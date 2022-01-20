@@ -45,9 +45,9 @@ const initArticleRoutes = require('./routes/article.routes');
 const initAuthRoutes = require('./routes/auth.router');
 const passport = require('passport');
 
+initAuthRoutes(app, mongoDbContext, passport);
 initIndexRoutes(app, s3Context);
 initArticleRoutes(app, sequelizeDb, mongoDbContext, passport);
-initAuthRoutes(app, mongoDbContext);
 
 app.listen(3000, () => {
   console.log("Running on Port 3000")
