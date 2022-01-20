@@ -35,7 +35,7 @@ let routes = (app, mongoDbContext, passport) => {
             userName: createdUser.userName,
             role: createdUser.role
           }
-        }, 'supersecretpass123');
+        }, process.env.JWT_SECRET);
         res.send(token);
       })
     } else {
@@ -48,7 +48,7 @@ let routes = (app, mongoDbContext, passport) => {
           userName: internalUser.userName,
           role: internalUser.role
         }
-      }, 'supersecretpass123'); 
+      }, process.env.JWT_SECRET); 
       res.send(token);    
     }  
   });

@@ -9,7 +9,7 @@ const GoogleStrategy = passportGoogle.Strategy;
 module.exports = (mongoDbContext) => {
   passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey   : 'supersecretpass123'
+    secretOrKey   : process.env.JWT_SECRET
   },
   (jwtPayload, done) => {
     return mongoDbContext.user.findById(jwtPayload.data.sub)
@@ -25,8 +25,8 @@ module.exports = (mongoDbContext) => {
   ));
 
   passport.use(new GoogleStrategy({
-    clientID: "202216913896-71nnrm48lbnlct5g4nskmiq7b5eejg0b.apps.googleusercontent.com",
-    clientSecret: "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",
+    clientID: process.env.GOOGLE_OAUTH_ID,
+    clientSecret: process.env.GOOGLE_OAUTH_PASSWORD,
     callbackURL: "http://localhost:3000/googleRedirect"
   },
   (accessToken, refreshToken, profile, done) => {

@@ -30,7 +30,7 @@ class AuthService{
         exp: new Date().setDate(new Date().getDate() + 1),
         userName: user.userName,
         role: user.role
-      }}, 'supersecretpass123')
+      }}, process.env.JWT_SECRET)
       return token;
     }
     throw new Error("something went wrong");
