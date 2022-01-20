@@ -28,7 +28,9 @@ class AuthService{
         sub: user.id,
         iat: new Date().getTime(),
         exp: new Date().setDate(new Date().getDate() + 1),
-        user: user
+        userName: user.userName,
+        id: user.id,
+        role: user.role
       }, 'supersecretpass123')
       return token;
     }
@@ -48,7 +50,8 @@ class AuthService{
 
     let newUser = {
       userName: registerData.userName,
-      password: await bcrypt.hash(registerData.password, 10)
+      password: await bcrypt.hash(registerData.password, 10),
+      role: registerData.role
     }
 
     this.mongoDbContext.user.create(newUser, (err) => {

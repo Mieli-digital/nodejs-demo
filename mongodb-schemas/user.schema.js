@@ -3,5 +3,6 @@ module.exports = {
   password: String,
   createdAt: Date,
   firstName: String,
-  lastName: String
+  lastName: String,
+  role: String
 }
