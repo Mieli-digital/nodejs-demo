@@ -4,17 +4,19 @@
   "description": "nodejs project for demo purposes",
   "main": "app.js",
   "dependencies": {
+    "aws-sdk": "^2.1062.0",
     "debug": "^4.3.3",
     "dotenv": "^14.1.0",
     "express": "^4.17.2",
     "mariadb": "^2.5.5",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.1.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "nodemon": "^2.0.15",
     "sequelize": "^6.13.0",
     "sequelize-cli": "^6.4.1"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node app.js",
     "develop": "nodemon app.js"
