@@ -1,0 +1,119 @@
+version: "3"
+## configure netowrks
+networks:
+  web:
+    external:
+      name: web
+  internal:
+    external: false
+volumes:
+  mariadb-volume:
+  minio-volume:
+  mongodb-volume:
+## configure services
+services:
+  ## Config DB
+  mariadb:
+    image: mariadb:latest
+    command: mysqld --innodb-buffer-pool-size=4G --slow_query_log=1 --slow_query_log_file=/var/log/mysql/mysql-slow.log --long_query_time=2 --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - web
+      - internal
+    volumes:
+      - mariadb-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    labels:
+      - traefik.enable=false
+    restart: always
+  ## DB UI
+  adminer:
+    image: adminer:4.6.1
+    labels:
+      - traefik.http.routers.adminer.rule=Host(`${ADMINER_HOST}`)
+      - traefik.port=8080
+      - traefik.http.routers.adminer.tls=true
+      - traefik.http.routers.adminer.tls.certresolver=lets-encrypt
+    ports:
+      - 8080:8080
+    networks:
+      - internal
+      - web
+    depends_on:
+      - mariadb
+    restart: always
+  ## S3 Bucket
+  minio:
+    image: minio/minio:RELEASE.2020-10-28T08-16-50Z
+    volumes:
+      - minio-volume:/data
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY} 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: always
+    ports:
+      - 9000:9000
+    networks:
+      - web
+      - internal    
+    # configure to host  
+    labels:
+      - traefik.http.routers.minio.rule=Host(`${MINIO_HOST}`)
+      - traefik.port=9000
+      - traefik.http.routers.minio.tls=true
+      - traefik.http.routers.minio.tls.certresolver=lets-encrypt
+  ## NoSQL DB
+  mongo:
+    image: mongo
+    volumes:
+      - mongodb-volume:/data/db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    networks:
+      - web
+      - internal
+    ports:
+      - 27017:27017
+    # configure to host  
+    labels:
+      - traefik.enable=false     
+  ## WebApi
+  nodejs-demo:
+    image: pandawan91/nodejs-demo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY} 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_INTERNAL_NAME: mariadb
+      MINIO_INTERNAL_NAME: minio
+      MONGO_INTERNAL_NAME: mongo      
+    networks:
+      - web
+      - internal
+    ports: 3000:3000
+    labels:
+      - traefik.http.routers.nodejs-demo.rule=Host(`${WEBAPI_HOST}`)
+      - traefik.port=3000
+      - traefik.http.routers.nodejs-demo.tls=true
+      - traefik.http.routers.nodejs-demo.tls.certresolver=lets-encrypt

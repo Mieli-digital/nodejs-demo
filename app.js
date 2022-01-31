@@ -27,7 +27,7 @@ const MongoDbContextFactory = require('./connections/mongodb.context');
 const mongoDbContext = new MongoDbContextFactory({
   username: "root",
   password: process.env.MONGO_INITDB_ROOT_PASSWORD,
-  host: "localhost",
+  host: process.env.MONGO_INTERNAL_NAME ? process.env.MONGO_INTERNAL_NAME : 'localhost',
   port: 27017,
   database: process.env.MONGO_INITDB_DATABASE
 });
@@ -44,6 +44,7 @@ const initIndexRoutes = require('./routes/index.routes');
 const initArticleRoutes = require('./routes/article.routes');
 const initAuthRoutes = require('./routes/auth.router');
 const passport = require('passport');
+const { env } = require('process');
 
 initAuthRoutes(app, mongoDbContext, passport);
 initIndexRoutes(app, s3Context);

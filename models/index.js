@@ -10,7 +10,7 @@ let sequelize = new Sequelize(
   process.env.MYSQL_DATABASE, 
   process.env.MYSQL_USER, 
   process.env.MYSQL_PASSWORD, {
-    host: "localhost",
+    host: process.env.MYSQL_INTERNAL_NAME ? process.env.MYSQL_INTERNAL_NAME : "localhost",
     dialect: "mariadb",
   });
 
